@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LSPD CFW | نموذج تقرير الراديو</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">🛡️</div>
+  <div class="header-text">
+    <h1>LSPD · CFW</h1>
+    <p>نظام تقارير الراديو — Los Santos Police Department</p>
+  </div>
+  <div class="status-bar">
+    <div class="status-dot"></div>
+    <span class="status-text">ONLINE</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="page-intro">
+    <div class="intro-icon">📻</div>
+    <div>
+      <h2>نموذج تقرير مسؤول الراديو</h2>
+      <p>قم بتعبئة جميع الحقول المطلوبة بدقة. سيتم إرسال التقرير تلقائياً إلى روم الديسكورد.</p>
+    </div>
+  </div>
+
+  <form id="reportForm">
+
+    <!-- القسم 1: معلومات المسؤول -->
+    <div class="card">
+      <div class="section-title">القسم الأول — معلومات مسؤول الراديو</div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>الاسم في السيرفر <span class="required">*</span></label>
+          <input type="text" id="officerName" placeholder="مثال: John Smith" required>
+        </div>
+        <div class="form-group">
+          <label>الرتبة <span class="required">*</span></label>
+          <select id="rank" required>
+            <option value="">— اختر الرتبة —</option>
+            <option>Cadet</option>
+            <option>Officer I</option>
+            <option>Officer II</option>
+            <option>Officer III</option>
+            <option>Senior Officer</option>
+            <option>Corporal</option>
+            <option>Detective</option>
+            <option>Sergeant</option>
+            <option>Lieutenant</option>
+            <option>Captain</option>
+            <option>Commander</option>
+            <option>Deputy Chief</option>
+            <option>Chief of Police</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>اليونت (Unit) <span class="required">*</span></label>
+          <input type="text" id="unit" placeholder="مثال: Unit 4 / 1-Lincoln-4" required>
+        </div>
+        <div class="form-group">
+          <label>رقم الباج <span class="required">*</span></label>
+          <input type="text" id="badge" placeholder="مثال: #1042" required>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>تاريخ الجلسة <span class="required">*</span></label>
+          <input type="date" id="sessionDate" required>
+        </div>
+        <div class="form-group">
+          <label>مدة مسك الراديو <span class="required">*</span></label>
+          <input type="text" id="duration" placeholder="مثال: ساعتين / 3 ساعات" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- القسم 2: من كان معك في الراديو -->
+    <div class="card">
+      <div class="section-title">القسم الثاني — من كان معك في الراديو</div>
+      <p class="section-hint">أضف أسماء الضباط الذين كانوا في الراديو معك خلال الجلسة</p>
+
+      <div id="radioMembers" class="members-list">
+        <div class="member-item">
+          <span class="member-num">1</span>
+          <input type="text" placeholder="اسم الضابط في السيرفر" class="member-input">
+          <input type="text" placeholder="رتبته / يونته (اختياري)" class="member-rank-input">
+          <button type="button" class="remove-btn" onclick="removeMember(this)">✕</button>
+        </div>
+      </div>
+
+      <button type="button" class="add-btn" onclick="addMember()">
+        <span>+</span> إضافة ضابط
+      </button>
+    </div>
+
+    <!-- القسم 3: الإنجازات -->
+    <div class="card">
+      <div class="section-title">القسم الثالث — الإنجازات خلال الجلسة</div>
+      <p class="section-hint">أدخل كل إنجاز أو حدث مهم قمت به خلال فترة مسك الراديو</p>
+
+      <div id="achievementsList" class="achievements-list">
+        <div class="achievement-item">
+          <span class="ach-num">1</span>
+          <input type="text" placeholder="مثال: تنسيق مطاردة ونجاح في القبض على المشتبه به" class="ach-input">
+          <button type="button" class="remove-btn" onclick="removeAchievement(this)">✕</button>
+        </div>
+      </div>
+
+      <button type="button" class="add-btn" onclick="addAchievement()">
+        <span>+</span> إضافة إنجاز
+      </button>
+    </div>
+
+    <!-- القسم 4: ملاحظات -->
+    <div class="card">
+      <div class="section-title">القسم الرابع — ملاحظات إضافية</div>
+
+      <div class="form-group">
+        <label>ملاحظات أو مشكلات واجهتها (اختياري)</label>
+        <textarea id="notes" placeholder="أي ملاحظات إضافية تود إضافتها..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>تقييمك لجلسة الراديو <span class="required">*</span></label>
+        <div class="rating-group">
+          <label class="rating-option">
+            <input type="radio" name="rating" value="ممتازة"> <span>⭐ ممتازة</span>
+          </label>
+          <label class="rating-option">
+            <input type="radio" name="rating" value="جيدة"> <span>✅ جيدة</span>
+          </label>
+          <label class="rating-option">
+            <input type="radio" name="rating" value="متوسطة"> <span>⚠️ متوسطة</span>
+          </label>
+          <label class="rating-option">
+            <input type="radio" name="rating" value="سيئة"> <span>❌ سيئة</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- زر الإرسال -->
+    <button type="submit" class="submit-btn" id="submitBtn">
+      <span id="submitText">📤 إرسال التقرير إلى الديسكورد</span>
+      <div id="submitSpinner" class="spinner hidden"></div>
+    </button>
+
+  </form>
+
+  <!-- رسالة النجاح -->
+  <div id="successMsg" class="success-msg hidden">
+    <div class="success-icon">✅</div>
+    <h3>تم إرسال التقرير بنجاح!</h3>
+    <p>تم إرسال تقريرك إلى روم الديسكورد بنجاح.</p>
+    <button onclick="resetForm()" class="reset-btn">📋 إرسال تقرير جديد</button>
+  </div>
+
+  <!-- رسالة الخطأ -->
+  <div id="errorMsg" class="error-msg hidden">
+    <div>❌ حدث خطأ أثناء الإرسال. تأكد من الاتصال بالإنترنت وحاول مجدداً.</div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
